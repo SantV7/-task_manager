@@ -1,4 +1,5 @@
 import { FilePen } from 'lucide-react'; // icon for edit goal 
+import { useState } from 'react';
 
 interface GoalProps {
     id: number ;
@@ -8,18 +9,22 @@ interface GoalProps {
 }
 
 const Goal = ({id, title, desc, status}: GoalProps) => {
+
+  const [ settings, setSettings ] = useState<boolean>(false)
+
   return (
     <>
-      <div key={id}>
-        <header>
-            <h2>{title}</h2>
-            <FilePen />
+      <div id='goal' key={id}>
+        <header id='title_area_goal'>
+            <h2 id='task_title'>{title}</h2>
+            <FilePen onClick={() => setSettings(!settings)} id='settings_icon' />
         </header>
         <section>
-            <p>{desc}</p>
+            <p id='desc_txt'>{desc}</p>
         </section>
-        <footer>
-            <p>Status: {status ? 'Ativo' : 'Finalizado'}</p>
+        <footer id='footer_status'>
+            <p id='status'>Status:</p>
+            <p>{status ? 'Ativo' : 'Finalizado'}</p>
         </footer>
       </div>
     </>
