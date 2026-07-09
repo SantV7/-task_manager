@@ -2,6 +2,9 @@ import { MessageCirclePlus } from 'lucide-react';
 import { BadgeCheck } from 'lucide-react';
 import { RectangleEllipsis } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { SavePlus } from 'lucide-react';
+// import { Trash2 } from 'lucide-react'; // icon for delete Definite goal <Trash2 />
+// import { Settings } from 'lucide-react'; // settings for edit goal  <Settings />
 import Goal from './components/Goal';
 import './global.css'
 
@@ -53,13 +56,17 @@ function App() {
       return
     }
 
+    const nextId = goalUser.length > 0 
+      ? Math.max(...goalUser.map(goal => goal.id)) + 1 
+      : 1
+
     const newGoal: GoalUser = {
-      id,
+      id: nextId,
       titleGoal: titleGoalSetter,
       descGoal: descGoalSetter,
       statusGoal: true
     }
-
+    
     if(goalUser.length === 0) {
       setGoalUser([
         newGoal
@@ -74,6 +81,8 @@ function App() {
     setDescGoalSetter('')
     setAddGoal(false)
   }
+
+
 
   return (
     <>
@@ -118,19 +127,24 @@ function App() {
                   <span>TItulo</span>
                   <input 
                     type="text" 
-                    placeholder='Estudar Frontend' 
+                    placeholder='Estudar Frontend'
+                    value={titleGoalSetter} 
                     onChange={(e) => setTitleGoalSetter(e.target.value)}
                   />
                 </label>
 
                 <label>
-                  <span>TItulo</span>
+                  <span>Descrição</span>
                   <input 
                     type="text" 
                     placeholder='Aprender Next.js' 
+                    value={descGoalSetter}
                     onChange={(e) => setDescGoalSetter(e.target.value)}
                   />
-                </label>               
+                </label>      
+                <button type="submit">
+                  <SavePlus />
+                </button>         
               </form>
             </div>
           )
