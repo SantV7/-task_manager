@@ -1,6 +1,6 @@
 import { FilePen } from 'lucide-react'; // icon for edit goal 
-import { useState } from 'react';
 import { Type } from 'lucide-react';
+import { useState } from 'react';
 import { Play } from 'lucide-react';
 
 interface GoalProps {
@@ -23,7 +23,6 @@ const Goal = ({id, title, desc, status, toggleStatus}: GoalProps) => {
     {position: 'orange'}
   ]
 
-
   const [ colorTitle, setColorTitle ] = useState<number>(0)
 
   const nameColorTitle = [
@@ -31,6 +30,8 @@ const Goal = ({id, title, desc, status, toggleStatus}: GoalProps) => {
     'Blue',
     'Orange'
   ]
+
+
 
 
   return (
@@ -60,9 +61,9 @@ const Goal = ({id, title, desc, status, toggleStatus}: GoalProps) => {
                   <Type />
                 </header>
                 <div id='setter_title'>
-                   <Play onClick={() => setColorTitle((prevColor) => prevColor - 1 )} style={{rotate: '180deg'}}/>
-                   <p>Center</p>
-                   <Play onClick={() => setColorTitle((prevColor) => prevColor + 1 )}/>
+                   <Play onClick={() => setColorTitle((prevColor) => Math.max(0, prevColor - 1) )} style={{rotate: '180deg'}}/>
+                   <p>{nameColorTitle[colorTitle]}</p>
+                   <Play onClick={() => setColorTitle((prevColor) => Math.min(positionTitle.length - 1, prevColor + 1))}/>
                 </div>
               </div>
             </>
