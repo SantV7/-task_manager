@@ -16,9 +16,9 @@ interface GoalUser {
 }
 
 function App() {
-  const [titleGoalSetter, setTitleGoalSetter ] = useState<string>('')
-  const [descGoalSetter, setDescGoalSetter ] = useState<string>('')
-  const [alertMessage, setAlertMessage] = useState<boolean>(false)
+  const [ titleGoalSetter, setTitleGoalSetter ] = useState<string>('')
+  const [ descGoalSetter, setDescGoalSetter ] = useState<string>('')
+  const [ alertMessage, setAlertMessage ] = useState<boolean>(false)
   
   const [ goalUser, setGoalUser ] = useState<GoalUser[]>([
     {
@@ -31,9 +31,11 @@ function App() {
       id: 2,
       titleGoal: 'Backend',
       descGoal: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Provident, corrupti architecto aperiam ad suscipit quibusdam',
-      statusGoal: false       
+      statusGoal: true     
     }  
   ])
+
+
 
   const [ addGoal, setAddGoal ] = useState<boolean>(false)
 
@@ -81,6 +83,7 @@ function App() {
     setDescGoalSetter('')
     setAddGoal(false)
   }
+
 
 
 
@@ -152,7 +155,11 @@ function App() {
 
         <div className="area_goal">
           {goalUser.map((goalItem) => (
-            <Goal id={goalItem.id} title={goalItem.titleGoal} desc={goalItem.descGoal} status={goalItem.statusGoal}/>
+            <Goal id={goalItem.id} title={goalItem.titleGoal} desc={goalItem.descGoal} status={goalItem.statusGoal} toggleStatus={(id) => {
+        setGoalUser(prev => prev.map(item => 
+          item.id === id ? { ...item, statusGoal: !item.statusGoal } : item
+        ))
+      }}/>
           ))}
         </div>
       </section>
