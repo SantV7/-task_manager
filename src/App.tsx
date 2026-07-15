@@ -3,7 +3,6 @@ import { BadgeCheck } from 'lucide-react';
 import { RectangleEllipsis } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { SavePlus } from 'lucide-react';
-// import { Trash2 } from 'lucide-react'; // icon for delete Definite goal <Trash2 />
 // import { Settings } from 'lucide-react'; // settings for edit goal  <Settings />
 import Goal from './components/Goal';
 import './global.css'
@@ -34,6 +33,10 @@ function App() {
       statusGoal: true     
     }  
   ])
+
+    function deleteGoal(id: number) {
+      setGoalUser((prevGoals) => prevGoals.filter(goalUser => goalUser.id !== id))
+    }
 
 
 
@@ -102,7 +105,10 @@ function App() {
           <li className='filter_goal' key={itemFilter.id}>
             <span>{String(index + 1).padStart(2, '0')}_</span>{itemFilter.titleGoal}
             <div>{itemFilter.statusGoal}</div>
-            {itemFilter.statusGoal ? <BadgeCheck size={29} color='yellow'/> : <RectangleEllipsis size={30} color='orange'/>}
+            {itemFilter.statusGoal 
+             ? <BadgeCheck size={29} color='yellow'/> 
+             : <RectangleEllipsis size={30} color='orange'
+            />}
           </li>
         ))}
        </ul>
@@ -155,9 +161,14 @@ function App() {
 
         <div className="area_goal">
           {goalUser.map((goalItem) => (
-            <Goal id={goalItem.id} title={goalItem.titleGoal} desc={goalItem.descGoal} status={goalItem.statusGoal} toggleStatus={(id) => {
-        setGoalUser(prev => prev.map(item => 
-          item.id === id ? { ...item, statusGoal: !item.statusGoal } : item
+            <Goal id={goalItem.id} 
+             title={goalItem.titleGoal} 
+             desc={goalItem.descGoal} 
+             status={goalItem.statusGoal} 
+             deleteItem={deleteGoal} 
+             toggleStatus={(id) => {
+            setGoalUser(prev => prev.map(item => 
+            item.id === id ? { ...item, statusGoal: !item.statusGoal } : item
         ))
       }}/>
           ))}
