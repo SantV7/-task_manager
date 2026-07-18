@@ -3,6 +3,7 @@ import { Type } from 'lucide-react';
 import { useState } from 'react';
 import { Play } from 'lucide-react';
 import { Trash2 } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 interface GoalProps {
   id: number ;
@@ -11,12 +12,15 @@ interface GoalProps {
   status: boolean ;
   deleteItem: (id:number) => void;
   toggleStatus: (id: number) => void;
+  editItem: (id: number, newTitle: string, newDesc: string) => void;
 }
 
-
-const Goal = ({id, title, desc, status, toggleStatus, deleteItem}: GoalProps) => {
+const Goal = ({id, title, desc, status, toggleStatus, deleteItem, editItem}: GoalProps) => {
 
   const [ showSettings, setShowSettings ] = useState<boolean>(false)
+  const [ isEditing, setIsEditing ] = useState<boolean>(false)
+  const [ editTitle, setEditTitle ] = useState<string>(title)
+  const [ editDesc, setEditDesc ] = useState<string>(desc)
 
   const positionTitle = [
     {position: 'white'},
@@ -32,21 +36,52 @@ const Goal = ({id, title, desc, status, toggleStatus, deleteItem}: GoalProps) =>
     'Orange'
   ]
 
-
-
+  const handleSave = () => {
+    if (editTitle.trim() && editDesc.trim()) {
+      editItem(id, editTitle, editDesc)
+      setIsEditing(false)
+    }
+  }
 
   return (
     <>
       <div id='goal' key={id}>
         <header id='title_area_goal'>
-            <h2 style={{color: `${positionTitle[colorTitle].position}`}} id='task_title'>{title}</h2>
+            {isEditing ? (
+              <input 
+                className='input_add'
+                type="text" 
+                value={editTitle}
+                onChange={(e) => setEditTitle(e.target.value)}
+                style={{ fontSize: '1.1rem', padding: '2px 6px', width: '65%' }}
+              />
+            ) : (
+              <h2 style={{color: `${positionTitle[colorTitle].position}`}} id='task_title'>{title}</h2>
+            )}
             <div id='icons_edit_goal'>
-              <FilePen onClick={() => setShowSettings(!showSettings)} className='settings_icon' />
+              {isEditing ? (
+                <Check onClick={handleSave} className='settings_icon' color='#4ade80' />
+              ) : (
+                <FilePen onClick={() => {
+                  setShowSettings(!showSettings)
+                  setIsEditing(true)
+                }} className='settings_icon' />
+              )}
               <Trash2 onClick={() => deleteItem(id)} className='settings_icon' color=' rgb(255, 136, 0)' />
             </div>
         </header>
         <section>
-            <p id='desc_txt'>{desc}</p>
+            {isEditing ? (
+              <input 
+                className='input_add'
+                type="text" 
+                value={editDesc}
+                onChange={(e) => setEditDesc(e.target.value)}
+                style={{ fontSize: '1rem', padding: '2px 6px', width: '100%', marginTop: '8px' }}
+              />
+            ) : (
+              <p id='desc_txt'>{desc}</p>
+            )}
         </section>
         <footer id='footer_status'>
             <div style={{display: 'flex', flexFlow: 'row nowrap', alignItems:'end', gap: '3px'}}>
