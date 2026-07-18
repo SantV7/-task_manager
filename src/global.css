@@ -27,6 +27,51 @@ body {
     width: 350px;
 }
 
+#add_goal_style {
+    display: flex;
+    justify-content: space-between;
+    background-color: rgb(125, 136, 158);
+    padding: 10px;
+    border-radius: 10px;
+    min-height: 200px;
+}
+
+.label_add_goal {
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+}
+
+.label_add_goal > span {
+    border-bottom: 2px solid  transparent;
+    font-size: 1.4rem;
+    transition: ease 0.15s;
+    color: rgb(215, 208, 253);
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.678);
+}
+
+.input_add {
+    font-size: 1.2rem;
+    letter-spacing: 0.6px;
+    transition: ease 0.27s;
+    padding: 6px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.144);
+    outline: none;
+}
+
+.input_add:focus {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.284);
+    border: 1px solid rgb(138, 138, 255);
+}
+
+.label_add_goal:has(.input_add:focus) span {
+    scale: 1.01;
+    text-shadow: 0px 1px 1px rgb(0, 0, 0);
+    border-bottom: 2px solid orange;
+}
+
 .list_storage_filter {
     width: 100%;
     display: flex;

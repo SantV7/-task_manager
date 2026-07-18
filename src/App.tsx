@@ -8,16 +8,17 @@ import Goal from './components/Goal';
 import './global.css'
 
 interface GoalUser {
-    id: number ;
-    titleGoal: string ;
-    descGoal: string ;
-    statusGoal: boolean ;
+  id: number ;
+  titleGoal: string ;
+  descGoal: string ;
+  statusGoal: boolean ;
 }
 
 function App() {
-  const [ titleGoalSetter, setTitleGoalSetter ] = useState<string>('')
-  const [ descGoalSetter, setDescGoalSetter ] = useState<string>('')
-  const [ alertMessage, setAlertMessage ] = useState<boolean>(false)
+
+  const [titleGoalSetter, setTitleGoalSetter] = useState<string>('')
+  const [descGoalSetter, setDescGoalSetter] = useState<string>('')
+  const [alertMessage, setAlertMessage] = useState<boolean>(false)
   
   const [ goalUser, setGoalUser ] = useState<GoalUser[]>([
     {
@@ -40,7 +41,7 @@ function App() {
 
 
 
-  const [ addGoal, setAddGoal ] = useState<boolean>(false)
+  const [addGoal, setAddGoal] = useState<boolean>(false)
 
   let totalGoal: number = goalUser.length
 
@@ -48,7 +49,7 @@ function App() {
     if (alertMessage) {
       const timer = setTimeout(() => {
         setAlertMessage(false)
-      }, 2500)
+      }, 2000)
       return () => clearTimeout(timer)
     }
   }, [alertMessage])
@@ -131,10 +132,11 @@ function App() {
         {
           addGoal && (
             <div>
-              <form onSubmit={handleSubmit}>
-                <label>
+              <form id='add_goal_style' onSubmit={handleSubmit}>
+                <label className='label_add_goal'>
                   <span>TItulo</span>
-                  <input 
+                  <input
+                    className='input_add' 
                     type="text" 
                     placeholder='Estudar Frontend'
                     value={titleGoalSetter} 
@@ -142,9 +144,10 @@ function App() {
                   />
                 </label>
 
-                <label>
-                  <span>Descrição</span>
-                  <input 
+                <label className='label_add_goal'>
+                  <span>Meta</span>
+                  <input
+                    className='input_add' 
                     type="text" 
                     placeholder='Aprender Next.js' 
                     value={descGoalSetter}
