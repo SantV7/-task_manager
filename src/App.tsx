@@ -3,7 +3,6 @@ import { BadgeCheck } from 'lucide-react';
 import { RectangleEllipsis } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { SavePlus } from 'lucide-react';
-// import { Settings } from 'lucide-react'; // settings for edit goal  <Settings />
 import Goal from './components/Goal';
 import './global.css'
 
@@ -15,35 +14,29 @@ interface GoalUser {
 }
 
 function App() {
-
   const [titleGoalSetter, setTitleGoalSetter] = useState<string>('')
   const [descGoalSetter, setDescGoalSetter] = useState<string>('')
   const [alertMessage, setAlertMessage] = useState<boolean>(false)
-  
-  const [ goalUser, setGoalUser ] = useState<GoalUser[]>([
-    {
-      id: 1,
-      titleGoal: 'Frontend',
-      descGoal: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Provident, corrupti architecto aperiam ad suscipit quibusdam',
-      statusGoal: true       
-    },
-    {
-      id: 2,
-      titleGoal: 'Backend',
-      descGoal: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Provident, corrupti architecto aperiam ad suscipit quibusdam',
-      statusGoal: true     
-    }  
-  ])
-
-    function deleteGoal(id: number) {
-      setGoalUser((prevGoals) => prevGoals.filter(goalUser => goalUser.id !== id))
-    }
-
-
-
   const [addGoal, setAddGoal] = useState<boolean>(false)
+  
+  const [goalUser, setGoalUser] = useState<GoalUser[]>(() => {
+    const savedGoals = localStorage.getItem('user_goals')
+    if (savedGoals) {
+      return JSON.parse(savedGoals)
+    }
+    return [
+      {
+        id: 1,
+        titleGoal: '1° Adicionar meta ',
+        descGoal: 'Basta clicar no button cinza, adicionar um titulo e uma meta/descrição',
+        statusGoal: true       
+      }
+    ]
+  })
 
-  let totalGoal: number = goalUser.length
+  useEffect(() => {
+    localStorage.setItem('user_goals', JSON.stringify(goalUser))
+  }, [goalUser])
 
   useEffect(() => {
     if (alertMessage) {
@@ -53,6 +46,16 @@ function App() {
       return () => clearTimeout(timer)
     }
   }, [alertMessage])
+
+  function deleteGoal(id: number) {
+    setGoalUser((prevGoals) => prevGoals.filter(goalUser => goalUser.id !== id))
+  }
+
+  function editGoal(id: number, newTitle: string, newDesc: string) {
+    setGoalUser(prev => prev.map(item => 
+      item.id === id ? { ...item, titleGoal: newTitle, descGoal: newDesc } : item
+    ))
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -73,23 +76,14 @@ function App() {
       statusGoal: true
     }
     
-    if(goalUser.length === 0) {
-      setGoalUser([
-        newGoal
-      ])
-    } else {
-        setGoalUser((prevData) => [
-          ...prevData, newGoal
-        ])
-    }
+    setGoalUser((prevData) => [...prevData, newGoal])
 
     setTitleGoalSetter('')
     setDescGoalSetter('')
     setAddGoal(false)
   }
 
-
-
+  let totalGoal: number = goalUser.length
 
   return (
     <>
@@ -105,7 +99,6 @@ function App() {
         {goalUser.map((itemFilter, index) => (
           <li className='filter_goal' key={itemFilter.id}>
             <span>{String(index + 1).padStart(2, '0')}_</span>{itemFilter.titleGoal}
-            <div>{itemFilter.statusGoal}</div>
             {itemFilter.statusGoal 
              ? <BadgeCheck size={29} color='yellow'/> 
              : <RectangleEllipsis size={30} color='orange'
@@ -123,7 +116,7 @@ function App() {
         <header id='add_goal_header'>
           <MessageCirclePlus
            color='white'  
-           size={36} 
+           size={55} 
            id='add_goal'
            onClick={() => setAddGoal(true)}
           />
@@ -138,7 +131,7 @@ function App() {
                   <input
                     className='input_add' 
                     type="text" 
-                    placeholder='Estudar Frontend'
+                    placeholder='Estudar...'
                     value={titleGoalSetter} 
                     onChange={(e) => setTitleGoalSetter(e.target.value)}
                   />
@@ -149,13 +142,13 @@ function App() {
                   <input
                     className='input_add' 
                     type="text" 
-                    placeholder='Aprender Next.js' 
+                    placeholder='Aprender...' 
                     value={descGoalSetter}
                     onChange={(e) => setDescGoalSetter(e.target.value)}
                   />
                 </label>      
-                <button type="submit">
-                  <SavePlus />
+                <button id='add_btn' type="submit">
+                  <SavePlus size={35} />
                 </button>         
               </form>
             </div>
@@ -164,16 +157,20 @@ function App() {
 
         <div className="area_goal">
           {goalUser.map((goalItem) => (
-            <Goal id={goalItem.id} 
-             title={goalItem.titleGoal} 
-             desc={goalItem.descGoal} 
-             status={goalItem.statusGoal} 
-             deleteItem={deleteGoal} 
-             toggleStatus={(id) => {
-            setGoalUser(prev => prev.map(item => 
-            item.id === id ? { ...item, statusGoal: !item.statusGoal } : item
-        ))
-      }}/>
+            <Goal 
+              key={goalItem.id}
+              id={goalItem.id} 
+              title={goalItem.titleGoal} 
+              desc={goalItem.descGoal} 
+              status={goalItem.statusGoal} 
+              deleteItem={deleteGoal} 
+              editItem={editGoal}
+              toggleStatus={(id) => {
+                setGoalUser(prev => prev.map(item => 
+                  item.id === id ? { ...item, statusGoal: !item.statusGoal } : item
+                ))
+              }}
+            />
           ))}
         </div>
       </section>

@@ -34,6 +34,7 @@ body {
     padding: 10px;
     border-radius: 10px;
     min-height: 200px;
+    gap: 10px;
 }
 
 .label_add_goal {
@@ -70,6 +71,22 @@ body {
     scale: 1.01;
     text-shadow: 0px 1px 1px rgb(0, 0, 0);
     border-bottom: 2px solid orange;
+}
+
+#add_btn {
+    flex-grow: 1;
+    min-width: 70px;
+    max-width: 140px;
+    padding: 10px;
+    height: 90px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: ease 0.3s;
+    background-color: rgb(190, 190, 255);
+}
+
+#add_btn:hover {
+    background-color: rgb(148, 148, 253);
 }
 
 .list_storage_filter {
@@ -190,7 +207,6 @@ body {
 
 #footer_status {
     display: flex;
-
     align-items: center;
     justify-content: space-between;
     flex-flow: row nowrap;
@@ -286,5 +302,15 @@ body {
     100% {
         opacity: 0;
         transform: translateY(-10px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #statistic_goal {
+        display: none;
+    }
+
+    #manegement {
+        min-height: 100vh;
     }
 }
